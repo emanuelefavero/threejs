@@ -1,10 +1,15 @@
 import './style.css'
 
-// TODO: R eset the canvas when the window is resized
+// TODO: Reset the canvas when the window is resized
 
-import * as THREE from 'three' // Import the Three.js library
+// Import the Three.js library
+import * as THREE from 'three'
 
-const scene = new THREE.Scene() // Create a new Three.js scene
+// Import the OrbitControls library
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+
+// Create a new Three.js scene
+const scene = new THREE.Scene()
 
 /**
  * Create a new Three.js camera
@@ -110,7 +115,38 @@ const lightHelper = new THREE.PointLightHelper(pointLight)
  */
 const gridHelper = new THREE.GridHelper(200, 50)
 
-scene.add(lightHelper, gridHelper)
+scene.add(lightHelper, gridHelper) // !
+
+/**
+ * Create a new Three.js orbit controls
+ * @desc Orbit controls allow the camera to orbit around a target
+ * @param {Object} object - The object to orbit around
+ * @param {Object} domElement - The DOM element to listen for mouse events
+ * @see https://threejs.org/docs/#examples/en/controls/OrbitControls
+ */
+const controls = new OrbitControls(camera, renderer.domElement)
+
+// Generate random stars
+function addStar() {
+  // Create a new Three.js mesh
+  // SphereGeometry(radius, widthSegments, heightSegments)
+  const geometry = new THREE.SphereGeometry(0.25, 24, 24)
+  const material = new THREE.MeshStandardMaterial({ color: 0xffffff })
+  const star = new THREE.Mesh(geometry, material)
+
+  // Generate random x, y, z coordinates - fill the array with 3 empty elements, then map over the array ad fill the array with random numbers
+  const [x, y, z] = Array(3)
+    .fill()
+    .map(() => THREE.MathUtils.randFloatSpread(100))
+  // ? randFloatSpread: Returns a random float between 0 and given value
+
+  // Set the position of the star
+  star.position.set(x, y, z)
+  scene.add(star)
+}
+
+// Add 200 stars - fill the array with 200 empty elements, then call the addStar function 200 times
+Array(200).fill().forEach(addStar)
 
 // Render the scene (game loop)
 function animate() {
@@ -121,6 +157,9 @@ function animate() {
   torus.rotation.y += 0.008
   torus.rotation.z += 0.01
   // torus.scale.x += 0.01
+
+  // Call controls update method to update the camera position
+  controls.update()
 
   renderer.render(scene, camera)
 }
