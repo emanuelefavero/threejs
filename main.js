@@ -17,7 +17,7 @@ const scene = new THREE.Scene() // Create a new Three.js scene
  * @see https://threejs.org/docs/#api/en/cameras/PerspectiveCamera
  */
 const camera = new THREE.PerspectiveCamera(
-  75,
+  100,
   window.innerWidth / window.innerHeight,
   0.1,
   1000
@@ -58,14 +58,14 @@ const geometry = new THREE.TorusGeometry(10, 3, 16, 100)
 /**
  * Create a new Three.js material
  *
- * @desc MeshBasicMaterial is a material for non-shiny (matte) surfaces with no specular highlights. There are many materials available in Three.js.
+ * @desc A material is a collection of properties that define how a surface reacts to light. There are many materials available in Three.js. We will use MeshStandardMaterial, which is a physically based material that is designed to work with lights. It needs light sources to be visible
  * @param {Object} color - The color of the material
  * @param {Object} wireframe - A 3D model that is represented by a set of lines, rather than by a set of polygons.
- * @see https://threejs.org/docs/#api/en/materials/MeshBasicMaterial
+ * @see https://threejs.org/docs/#api/en/materials/MeshStandardMaterial
  */
-const material = new THREE.MeshBasicMaterial({
-  color: 0x5983ff,
-  wireframe: true,
+const material = new THREE.MeshStandardMaterial({
+  color: 0xf983ff, // ? 0x is the hexadecimal prefix
+  // wireframe: true,
 })
 
 // Create a new Three.js mesh by combining the geometry and material
@@ -73,6 +73,44 @@ const torus = new THREE.Mesh(geometry, material)
 
 // Add the mesh to the scene
 scene.add(torus)
+
+/**
+ * Create a new Three.js light
+ * @desc A light is an object that emits light. There are many lights available in Three.js. We will use PointLight, which emits light in all directions from a single point.
+ * @param {Object} color - The color of the light
+ * @see https://threejs.org/docs/#api/en/lights/PointLight
+ */
+const pointLight = new THREE.PointLight(0xfddad3)
+pointLight.position.set(14, 16, 5) // Set the position of the light (x, y, z)
+
+/**
+ * Create a new Three.js ambient light
+ * @desc This light globally illuminates all objects in the scene equally.
+ * @param {Object} color - The color of the light
+ * @see https://threejs.org/docs/#api/en/lights/AmbientLight
+ */
+const ambientLight = new THREE.AmbientLight(0x5ab5fa)
+
+scene.add(pointLight, ambientLight)
+
+/**
+ * Create a new Three.js helper
+ * @desc A helper is an object that visualizes some aspect of a parent object. There are many helpers available in Three.js. We will use PointLightHelper, which visualizes the position of a PointLight.
+ * @param {Object} light - The light to visualize
+ * @see https://threejs.org/docs/#api/en/helpers/PointLightHelper
+ */
+const lightHelper = new THREE.PointLightHelper(pointLight)
+
+/**
+ * Create a new Three.js grid helper
+ * @desc A helper is an object that visualizes grids. Grids are two-dimensional arrays of lines.
+ * @param {Number} size - The size of the grid
+ * @param {Number} divisions - The number of divisions in the grid
+ * @see https://threejs.org/docs/#api/en/helpers/GridHelper
+ */
+const gridHelper = new THREE.GridHelper(200, 50)
+
+scene.add(lightHelper, gridHelper)
 
 // Render the scene (game loop)
 function animate() {
