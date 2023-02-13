@@ -2,15 +2,19 @@ import './style.css'
 
 // TODO: Reset the canvas when the window is resized
 
+// * IMPORT THREE.JS
 // Import the Three.js library
 import * as THREE from 'three'
-
 // Import the OrbitControls library
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
+// ------------------------------------------------
+
+// * SCENE
 // Create a new Three.js scene
 const scene = new THREE.Scene()
 
+// * CAMERA
 /**
  * Create a new Three.js camera
  *
@@ -31,6 +35,7 @@ const camera = new THREE.PerspectiveCamera(
   // ? Far clipping plane (1000): This determines the maximum distance from the camera that objects will be drawn. Objects farther from the camera than the far clipping plane will not be visible.
 )
 
+// * RENDERER
 // Create the component that actually draws the 3D scene on the screen
 const renderer = new THREE.WebGLRenderer({
   // render to the canvas element with the id 'bg'
@@ -49,6 +54,7 @@ camera.position.setZ(30)
 // DRAW render
 renderer.render(scene, camera)
 
+// * TORUS - GEOMETRY, MATERIAL, MESH
 /**
  * Create a new Three.js geometry
  * @desc A geometry is a collection of vertices, faces, and other elements that describe the shape of an object. There are many geometries available in Three.js.
@@ -79,6 +85,7 @@ const torus = new THREE.Mesh(geometry, material)
 // Add the mesh to the scene
 scene.add(torus)
 
+// * LIGHTS
 /**
  * Create a new Three.js light
  * @desc A light is an object that emits light. There are many lights available in Three.js. We will use PointLight, which emits light in all directions from a single point.
@@ -98,6 +105,7 @@ const ambientLight = new THREE.AmbientLight(0x5ab5fa)
 
 scene.add(pointLight, ambientLight)
 
+// * HELPERS
 /**
  * Create a new Three.js helper
  * @desc A helper is an object that visualizes some aspect of a parent object. There are many helpers available in Three.js. We will use PointLightHelper, which visualizes the position of a PointLight.
@@ -117,6 +125,7 @@ const gridHelper = new THREE.GridHelper(200, 50)
 
 scene.add(lightHelper, gridHelper) // !
 
+// * ORBIT CONTROLS
 /**
  * Create a new Three.js orbit controls
  * @desc Orbit controls allow the camera to orbit around a target
@@ -126,14 +135,14 @@ scene.add(lightHelper, gridHelper) // !
  */
 const controls = new OrbitControls(camera, renderer.domElement)
 
+// * STARS
 // Generate random stars
 function addStar() {
   // Create a new Three.js mesh
   // SphereGeometry(radius, widthSegments, heightSegments)
-  const geometry = new THREE.SphereGeometry(0.25, 24, 24)
-  const material = new THREE.MeshStandardMaterial({ color: 0xffffff })
-  const star = new THREE.Mesh(geometry, material)
-
+  const starGeometry = new THREE.SphereGeometry(0.25, 24, 24)
+  const starMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff })
+  const star = new THREE.Mesh(starGeometry, starMaterial)
   // Generate random x, y, z coordinates - fill the array with 3 empty elements, then map over the array ad fill the array with random numbers
   const [x, y, z] = Array(3)
     .fill()
@@ -148,10 +157,12 @@ function addStar() {
 // Add 200 stars - fill the array with 200 empty elements, then call the addStar function 200 times
 Array(200).fill().forEach(addStar)
 
+// * BACKGROUND
 // Add a background image
 const spaceTexture = new THREE.TextureLoader().load('space.jpg')
 scene.background = spaceTexture
 
+// * AVATAR
 // Add texture mapping
 // @see https://threejs.org/docs/#api/en/textures/Texture
 const emanueleTexture = new THREE.TextureLoader().load('emanuele.png')
@@ -168,6 +179,7 @@ const emanuele = new THREE.Mesh(
 
 scene.add(emanuele)
 
+// * MOON
 // Add a normal map - a normal map is a texture that is used to simulate the direction of the surface of an object. It is used to create the illusion of depth and detail on a flat surface.
 const moonTexture = new THREE.TextureLoader().load('moon.jpg')
 const normalTexture = new THREE.TextureLoader().load('normal.jpg')
@@ -185,6 +197,7 @@ moon.position.setX(-10) // setX does the same as .x
 
 scene.add(moon)
 
+// * SCROLL ANIMATION
 // Move camera and objects when scrolling
 function moveCamera() {
   // get the scroll position
@@ -198,23 +211,25 @@ function moveCamera() {
   // move avatar
   emanuele.rotation.y += 0.01
   emanuele.rotation.z += 0.01
+  emanuele.position.x = t * -0.0025
 
   // move camera
   // ? t is negative so we need to multiply by negative number
   camera.position.z = t * -0.01
-  camera.position.x = t * -0.0002
+  camera.position.x = t * -0.001
   camera.position.y = t * -0.0002
 
   // NOTE: Play with the values to adjust the animation
 }
 document.body.onscroll = moveCamera
 
+// * ANIMATION LOOP
 // Render the scene (game loop)
 function animate() {
   requestAnimationFrame(animate)
 
   // Every shape that we create has different properties that we can manipulate. For example, we can rotate the torus by 0.01 radians every frame.
-  torus.rotation.x += 0.01
+  torus.rotation.x += 0.005
   torus.rotation.y += 0.008
   torus.rotation.z += 0.01
   // torus.scale.x += 0.01
