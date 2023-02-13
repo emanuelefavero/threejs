@@ -2,6 +2,10 @@
 
 This is a cheat sheet repo for the [Three.js](https://threejs.org/) library.
 
+#### Screenshot
+
+<img src="screenshot.png" alt="screenshot" width="300">
+
 ## Usage
 
 - Clone the repo and `cd` into it
