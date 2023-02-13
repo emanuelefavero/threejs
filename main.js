@@ -148,6 +148,44 @@ function addStar() {
 // Add 200 stars - fill the array with 200 empty elements, then call the addStar function 200 times
 Array(200).fill().forEach(addStar)
 
+// Add a background image
+const spaceTexture = new THREE.TextureLoader().load('space.jpg')
+scene.background = spaceTexture
+
+// Add texture mapping
+// @see https://threejs.org/docs/#api/en/textures/Texture
+const emanueleTexture = new THREE.TextureLoader().load('emanuele.png')
+
+const emanuele = new THREE.Mesh(
+  new THREE.BoxGeometry(3, 3, 3),
+  new THREE.MeshBasicMaterial({ map: emanueleTexture })
+)
+// emanuele.rotateY(0.5)
+// emanuele.rotateX(-0.1)
+// emanuele.rotateZ(-0.03)
+// emanuele.scale.x = 1.5
+// emanuele.scale.y = 1.5
+
+scene.add(emanuele)
+
+// Add a normal map - a normal map is a texture that is used to simulate the direction of the surface of an object. It is used to create the illusion of depth and detail on a flat surface.
+const moonTexture = new THREE.TextureLoader().load('moon.jpg')
+const normalTexture = new THREE.TextureLoader().load('normal.jpg')
+
+const moon = new THREE.Mesh(
+  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.MeshStandardMaterial({
+    map: moonTexture,
+    normalMap: normalTexture,
+  })
+)
+
+// moon.position.z = 5
+// moon.position.x = 10
+// moon.position.y = 15
+
+scene.add(moon)
+
 // Render the scene (game loop)
 function animate() {
   requestAnimationFrame(animate)
@@ -157,6 +195,8 @@ function animate() {
   torus.rotation.y += 0.008
   torus.rotation.z += 0.01
   // torus.scale.x += 0.01
+
+  emanuele.rotation.y += 0.005
 
   // Call controls update method to update the camera position
   controls.update()
