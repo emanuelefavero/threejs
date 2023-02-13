@@ -123,7 +123,7 @@ const lightHelper = new THREE.PointLightHelper(pointLight)
  */
 const gridHelper = new THREE.GridHelper(200, 50)
 
-scene.add(lightHelper, gridHelper) // !
+// scene.add(lightHelper, gridHelper) // !
 
 // * ORBIT CONTROLS
 /**
@@ -207,11 +207,18 @@ function moveCamera() {
   moon.rotation.x += 0.05
   moon.rotation.y += 0.075
   moon.rotation.z += 0.05
+  moon.position.y = t * 0.001
+  moon.position.x = t * 0.002
 
   // move avatar
   emanuele.rotation.y += 0.01
   emanuele.rotation.z += 0.01
   emanuele.position.x = t * -0.0025
+
+  // move torus
+  torus.rotation.x += 0.01
+  torus.rotation.y += 0.02
+  torus.position.x = t * 0.0012
 
   // move camera
   // ? t is negative so we need to multiply by negative number
@@ -234,7 +241,11 @@ function animate() {
   torus.rotation.z += 0.01
   // torus.scale.x += 0.01
 
-  // emanuele.rotation.y += 0.005
+  emanuele.rotation.y += 0.01
+  emanuele.rotation.z += 0.005
+
+  moon.rotation.x += 0.01
+  moon.rotation.y += 0.005
 
   // Call controls update method to update the camera position
   controls.update()
