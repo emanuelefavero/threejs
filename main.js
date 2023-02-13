@@ -180,11 +180,34 @@ const moon = new THREE.Mesh(
   })
 )
 
-// moon.position.z = 5
-// moon.position.x = 10
-// moon.position.y = 15
+moon.position.z = 30
+moon.position.setX(-10) // setX does the same as .x
 
 scene.add(moon)
+
+// Move camera and objects when scrolling
+function moveCamera() {
+  // get the scroll position
+  const t = document.body.getBoundingClientRect().top
+
+  // move moon
+  moon.rotation.x += 0.05
+  moon.rotation.y += 0.075
+  moon.rotation.z += 0.05
+
+  // move avatar
+  emanuele.rotation.y += 0.01
+  emanuele.rotation.z += 0.01
+
+  // move camera
+  // ? t is negative so we need to multiply by negative number
+  camera.position.z = t * -0.01
+  camera.position.x = t * -0.0002
+  camera.position.y = t * -0.0002
+
+  // NOTE: Play with the values to adjust the animation
+}
+document.body.onscroll = moveCamera
 
 // Render the scene (game loop)
 function animate() {
@@ -196,7 +219,7 @@ function animate() {
   torus.rotation.z += 0.01
   // torus.scale.x += 0.01
 
-  emanuele.rotation.y += 0.005
+  // emanuele.rotation.y += 0.005
 
   // Call controls update method to update the camera position
   controls.update()

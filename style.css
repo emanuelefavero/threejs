@@ -16,14 +16,17 @@ canvas {
 }
 
 main {
+  /* * MAKE SURE page content is set to absolute in Three.js projects */
+  position: absolute;
+
   width: 100vw;
   color: white;
   z-index: 99;
-  position: absolute;
   width: 100%;
   margin: 0px auto;
   padding: 120px 0px;
 
+  /* * GRID helps with positioning elements in foregroud with Three.js objects */
   display: grid;
   grid-template-columns: repeat(12, 1fr);
 }
@@ -44,8 +47,10 @@ canvas {
 }
 
 header {
-  background: var(--dark-bg);
+  /* * GRID positioning */
   grid-column: 2 / span 5;
+
+  background: var(--dark-bg);
   font-size: 2.5rem;
   padding: 2rem;
   margin-bottom: var(--spacing);
