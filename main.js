@@ -1,7 +1,5 @@
 import './style.css'
 
-// TODO: Reset the canvas when the window is resized
-
 // * IMPORT THREE.JS
 // Import the Three.js library
 import * as THREE from 'three'
@@ -36,6 +34,7 @@ const camera = new THREE.PerspectiveCamera(
 )
 
 // * RENDERER
+
 // Create the component that actually draws the 3D scene on the screen
 const renderer = new THREE.WebGLRenderer({
   // render to the canvas element with the id 'bg'
@@ -45,14 +44,23 @@ const renderer = new THREE.WebGLRenderer({
 // Set the pixel ratio of the renderer to the device's pixel ratio
 renderer.setPixelRatio(window.devicePixelRatio)
 
-// Set the size of the renderer to the size of the window
-renderer.setSize(window.innerWidth, window.innerHeight)
+function draw() {
+  // Set the size of the renderer to the size of the window
+  renderer.setSize(window.innerWidth, window.innerHeight)
 
-// move the camera back (on the Z axis) so we can view the scene
-camera.position.setZ(30)
+  // move the camera back (on the Z axis) so we can view the scene
+  camera.position.setZ(30)
 
-// DRAW render
-renderer.render(scene, camera)
+  // DRAW render
+  renderer.render(scene, camera)
+}
+
+draw()
+
+// Reset the canvas when the window is resized
+window.addEventListener('resize', () => {
+  draw()
+})
 
 // * TORUS - GEOMETRY, MATERIAL, MESH
 /**
