@@ -2,6 +2,10 @@
 
 This is a cheat sheet repo for the [Three.js](https://threejs.org/) library.
 
+## Live Demo
+
+[https://threejs-taupe-nine.vercel.app/](https://threejs-taupe-nine.vercel.app/)
+
 #### Screenshot
 
 <img src="screenshot.png" alt="screenshot" width="300">
