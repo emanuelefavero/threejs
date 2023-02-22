@@ -84,9 +84,20 @@ blockquote p {
   line-height: 1;
 }
 
-blockquote p.last {
+blockquote a.last {
   position: relative;
   top: -5rem;
+  font-size: 3rem;
+  text-decoration: none;
+  background-color: #fff;
+  color: #000;
+  padding: 0 1rem;
+}
+
+blockquote a.last:hover {
+  /* color: #fff;
+  background-color: #000; */
+  text-decoration: underline;
 }
 
 .left {
